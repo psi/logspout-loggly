@@ -65,9 +65,7 @@ func (l *Adapter) Stream(logstream chan *router.Message) {
 		envMap := make(map[string]string)
 
 		for _, e := range m.Container.Config.Env {
-			fmt.Println(e)
 			pair := strings.SplitN(e, "=", 2)
-			fmt.Printf("PARSED %v=%v\n", pair[0], pair[1])
 			envMap[pair[0]] = pair[1]
 		}
 
@@ -76,8 +74,8 @@ func (l *Adapter) Stream(logstream chan *router.Message) {
 			ContainerName:  m.Container.Name,
 			ContainerID:    m.Container.ID,
 			ContainerImage: m.Container.Config.Image,
-			ServiceName:    "service",  // envMap["SERVICE_NAME"],
-			AppRevision:    "revision", // envMap["APP_REVISION"],
+			ServiceName:    envMap["SERVICE_NAME"],
+			AppRevision:    envMap["APP_REVISION"],
 		}
 
 		err := l.SendMessage(msg)
