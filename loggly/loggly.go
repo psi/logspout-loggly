@@ -71,9 +71,9 @@ func (l *Adapter) Stream(logstream chan *router.Message) {
 
 		msg := logglyMessage{
 			Message:        m.Data,
-			ContainerName:  m.Container.Name,
 			ContainerID:    m.Container.ID,
 			ContainerImage: m.Container.Config.Image,
+			InstanceID:     os.Getenv("INSTANCE_ID"),
 			ServiceName:    envMap["SERVICE_NAME"],
 			AppRevision:    envMap["APP_REVISION"],
 		}
@@ -120,9 +120,9 @@ func (l *Adapter) SendMessage(msg logglyMessage) error {
 
 type logglyMessage struct {
 	Message        string `json:"message"`
-	ContainerName  string `json:"container_name"`
 	ContainerID    string `json:"container_id"`
 	ContainerImage string `json:"container_image"`
+	InstanceID     string `json:"instance_id"`
 	ServiceName    string `json:"service_name,omitempty"`
 	AppRevision    string `json:"app_revision,omitempty"`
 }
